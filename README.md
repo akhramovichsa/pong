@@ -1,2 +1,4 @@
 # pong
-java andoid libgx box2d pong game
+pong game
+libgx box2d
+java andoid 
