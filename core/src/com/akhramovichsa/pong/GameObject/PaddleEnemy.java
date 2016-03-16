@@ -1,5 +1,6 @@
 package com.akhramovichsa.pong.GameObject;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -14,8 +15,11 @@ public class PaddleEnemy extends Rectangle {
         ball = _ball;
     }
 
-    public void processMovement(float move_velocity, float ground_bottom_y, float ground_top_y) {
+    public void processMovement(float move_velocity, float ground_bottom_y, float ground_top_y, float world_width) {
         float ball_y = ball.body.getPosition().y;
+        float ball_x = ball.body.getPosition().x;
+        float ball_velocity_x = ball.body.getLinearVelocity().x;
+        float body_x = body.getPosition().x;
         float body_y = body.getPosition().y;
 
         /*
@@ -30,8 +34,12 @@ public class PaddleEnemy extends Rectangle {
         }
         */
 
+        // Gdx.app.log("velocity", Float.toString(ball_velocity_x));
         // Управление через положение
-        // if (ball_y > )
-        body.setTransform(0f, ball_y, 0f);
+        if (ball_x < world_width/2f && ball_velocity_x < 0) {
+            if (ball_y - height / 2f > ground_bottom_y && ball_y + height / 2f < ground_top_y) {
+                body.setTransform(body_x, ball_y - height / 2f, 0f);
+            }
+        }
     }
 }

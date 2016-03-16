@@ -14,7 +14,7 @@ public class Paddle extends Rectangle {
         super(_world, _shapeRenderer, _width, _height);
     }
 
-    public void processMovement(float move_velocity, float min_y, float max_y) {
+    public void processMovement(float move_velocity, float min_y, float max_y, float screen_height, float world_height) {
         float body_x = body.getPosition().x;
         float body_y = body.getPosition().y;
 
@@ -29,9 +29,9 @@ public class Paddle extends Rectangle {
 
         // Управление тач скрином
         if (Gdx.input.isTouched()) {
-            float touch_y = 90 - Gdx.input.getY()/(720/90);
-            if (touch_y > min_y && touch_y +height < max_y) {
-                body.setTransform(body_x, touch_y, 0f);
+            float touch_y = world_height - Gdx.input.getY()/(screen_height/world_height);
+            if (touch_y - height/2f >= min_y && touch_y + height/2f <= max_y) {
+                body.setTransform(body_x, touch_y - height/2f, 0f);
             }
             // Gdx.app.log("touched", Integer.toString(90 - Gdx.input.getY() / (720 / 90)));
         }

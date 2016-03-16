@@ -50,6 +50,15 @@ public class Ball {
         shape.dispose();
     }
 
+    /**
+     * Запустить шарик
+     * @param velocity_x
+     * @param velocity_y
+     */
+    public void pushBall(float velocity_x, float velocity_y) {
+        body.setLinearVelocity(velocity_x, velocity_y);
+    }
+
     Matrix4 transform = new Matrix4();
     public void draw() {
         Vector2 pos = body.getWorldCenter();
@@ -58,13 +67,18 @@ public class Ball {
         // transform.setToTranslation(pos.x, pos.y, 0);
         // transform.rotate(0, 0, 1, (float) Math.toDegrees(angle));
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.identity();
         shapeRenderer.setColor(Color.WHITE);
         // shapeRenderer.setTransformMatrix(transform);
         // shapeRenderer.translate((body.getPosition().x - width/2) * ppm, (body.getPosition().y - height/2) * ppm, 0f);
         // shapeRenderer.translate(body.getPosition().x * ppm, body.getPosition().y * ppm, 0f);
-        shapeRenderer.circle(pos.x, pos.y, radius, 16);
+
+        // shapeRenderer.circle(pos.x, pos.y, radius, 4); //16);
+
+        // Шарик сделаем квадратным
+        shapeRenderer.rect(pos.x - radius, pos.y - radius, 2*radius, 2*radius);
+
         shapeRenderer.end();
     }
 }

@@ -15,8 +15,8 @@ import com.badlogic.gdx.physics.box2d.World;
  *
  */
 public class Rectangle {
-    protected float width;
-    protected float height;
+    public float width;
+    public float height;
 
     protected ShapeRenderer shapeRenderer;
 
@@ -63,7 +63,7 @@ public class Rectangle {
         transform.setToTranslation(pos.x, pos.y, 0);
         transform.rotate(0, 0, 1, (float) Math.toDegrees(angle));
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.identity();
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.setTransformMatrix(transform);
