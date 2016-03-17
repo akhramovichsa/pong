@@ -18,12 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * @see * http://www.gamefromscratch.com/page/LibGDX-Tutorial-series.aspx
+ * Экран окончания игры
  */
-public class FirstScreen implements Screen {
-
+public class FinishScreen implements Screen {
     static final int WORLD_WIDTH  = PongGame.WORLD_WIDTH;
     static final int WORLD_HEIGHT = PongGame.WORLD_HEIGHT;
+
+    private boolean isPlayerWins;
 
     private Game game;
     private OrthographicCamera camera;
@@ -31,8 +32,9 @@ public class FirstScreen implements Screen {
     private SpriteBatch batch;
     private BitmapFont font, font_big;
 
-    public FirstScreen(PongGame _game) {
-        game = _game;
+    public FinishScreen(PongGame _game, boolean is_player_wins) {
+        game         = _game;
+        isPlayerWins = is_player_wins;
     }
 
     @Override
@@ -74,41 +76,25 @@ public class FirstScreen implements Screen {
         Label label_pong = new Label("PONG", label_big_style);
 
         //-------------------------------------------------------//
-        //                      1 PLAYER                         //
+        //                      PLAYER WINS                       //
         //-------------------------------------------------------//
-        Label label_1_player = new Label("1 PLAYER", label_style);
-        label_1_player.addListener(new ClickListener() {
+        Label label_player_wins = new Label("PLAYER WINS", label_big_style);
+
+        //-------------------------------------------------------//
+        //                      DEVICE WINS                      //
+        //-------------------------------------------------------//
+        Label label_device_wins = new Label("DEVICE WINS", label_big_style);
+
+        //-------------------------------------------------------//
+        //                      PLAY AGAIN                       //
+        //-------------------------------------------------------//
+        Label label_play_again = new Label("PLAY AGAIN", label_style);
+        label_play_again.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked 1 player");
                 f_sharp_5.play();
                 game.setScreen(new GameScreen((PongGame) game));
                 dispose();
-                // label_1_player.setText("PONG 1");
-            }
-        });
-
-        //-------------------------------------------------------//
-        //                      2 PLAYERS                        //
-        //-------------------------------------------------------//
-        Label label_2_players = new Label("2 PLAYERS", label_style);
-        label_2_players.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked 2 players");
-                f_sharp_5.play();
-            }
-        });
-
-        //-------------------------------------------------------//
-        //                      SETTINGS                         //
-        //-------------------------------------------------------//
-        Label label_settings = new Label("SETTINGS", label_style);
-        label_settings.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked settings");
-                f_sharp_5.play();
             }
         });
 
@@ -119,10 +105,8 @@ public class FirstScreen implements Screen {
         label_exit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked exit");
                 f_sharp_5.play();
                 Gdx.app.exit();
-                // label_1_player.setText("PONG 1");
             }
         });
 
@@ -133,13 +117,15 @@ public class FirstScreen implements Screen {
         // table.setDebug(true);
         // table.setFillParent(true);
         table.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
-        table.add(label_pong).expandX().center().pad(WORLD_HEIGHT / 32);
+        // table.add(label_pong).expandX().center().pad(WORLD_HEIGHT / 32);
+        // table.row();
+        if (isPlayerWins) {
+            table.add(label_player_wins).expandX().center().pad(WORLD_HEIGHT / 32);
+        } else {
+            table.add(label_device_wins).expandX().center().pad(WORLD_HEIGHT / 32);
+        }
         table.row();
-        table.add(label_1_player).expandX().center().pad(WORLD_HEIGHT / 32);
-        table.row();
-        table.add(label_2_players).expandX().center().pad(WORLD_HEIGHT / 32);
-        table.row();
-        table.add(label_settings).expandX().center().pad(WORLD_HEIGHT / 32);
+        table.add(label_play_again).expandX().center().pad(WORLD_HEIGHT / 32);
         table.row();
         table.add(label_exit).expandX().center();
 
@@ -195,4 +181,5 @@ public class FirstScreen implements Screen {
         stage.dispose();
         font.dispose();
     }
+
 }

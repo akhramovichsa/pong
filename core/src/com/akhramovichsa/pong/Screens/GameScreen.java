@@ -56,13 +56,13 @@ public class GameScreen implements Screen {
     // Ракетка
     static final float PADDLE_SIZE_X     = WORLD_WIDTH  / 64f;
     static final float PADDLE_SIZE_Y     = WORLD_HEIGHT / 10f;
-    static final float PADDLE_POSITION_X = WORLD_WIDTH - PADDLE_SIZE_X - WORLD_WIDTH/32f;  // Правая сторона
+    static final float PADDLE_POSITION_X = WORLD_WIDTH - PADDLE_SIZE_X - WORLD_WIDTH/16f;  // Правая сторона
     static final float PADDLE_POSITION_Y = WORLD_HEIGHT/2f - PADDLE_SIZE_Y/2f; // Середина экрана
 
     // Ракетка, соперника
     static final float PADDLE_ENEMY_SIZE_X     = WORLD_WIDTH  / 64f;
     static final float PADDLE_ENEMY_SIZE_Y     = WORLD_HEIGHT / 10f;
-    static final float PADDLE_ENEMY_POSITION_X = WORLD_WIDTH/32f;                          // Левая сторона
+    static final float PADDLE_ENEMY_POSITION_X = WORLD_WIDTH / 16f;                          // Левая сторона
     static final float PADDLE_ENEMY_POSITION_Y = WORLD_HEIGHT/2f - PADDLE_ENEMY_SIZE_Y/2f; // Середина экрана
 
     // Центральная линия
@@ -81,7 +81,7 @@ public class GameScreen implements Screen {
     private World world;
 
     Rectangle groundTop;
-    Rectangle   groundBottom;
+    Rectangle groundBottom;
     Ball ball;
     Paddle paddle;
     PaddleEnemy paddleEnemy;
@@ -93,9 +93,14 @@ public class GameScreen implements Screen {
     private State state          = State.RUN;
     private int paddleScore      = 0;
     private int paddleEnemyScore = 0;
+    private boolean gameActive    = false;
+
+    final private Sound f_sharp_3;
 
     public GameScreen(PongGame game) {
         this.game = game;
+
+        f_sharp_3 = Gdx.audio.newSound(Gdx.files.internal("desktop/assets/pongblip_f_sharp_3.mp3"));
     }
 
     @Override
@@ -107,6 +112,7 @@ public class GameScreen implements Screen {
         //-------------------------------------------------------//
         final Sound f_sharp_5 = Gdx.audio.newSound(Gdx.files.internal("desktop/assets/pongblip_f_sharp_5.mp3"));
         final Sound f_sharp_4 = Gdx.audio.newSound(Gdx.files.internal("desktop/assets/pongblip_f_sharp_4.mp3"));
+        // f_sharp_3 = Gdx.audio.newSound(Gdx.files.internal("desktop/assets/pongblip_f_sharp_3.mp3"));
 
 		/*
 		font          = new BitmapFont();
@@ -159,27 +165,41 @@ public class GameScreen implements Screen {
 
             @Override
             public void beginContact(Contact contact) {
+                //-------------------------------------------------------//
+                //             Столкновение с ракеткой игрока            //
+                //-------------------------------------------------------//
                 if ((contact.getFixtureA().getBody() == ball.body   && contact.getFixtureB().getBody() == paddle.body) ||
                     (contact.getFixtureA().getBody() == paddle.body && contact.getFixtureB().getBody() == ball.body)) {
                     f_sharp_5.play();
 
-                    Gdx.app.log("collision1", contact.getWorldManifold().getPoints()[0].toString());
-                    Gdx.app.log("paddle_pos", paddle.body.getPosition().toString());
+                    // Gdx.app.log("collision1", contact.getWorldManifold().getPoints()[0].toString());
+                    // Gdx.app.log("paddle_pos", paddle.body.getPosition().toString());
 
+                    // Вычисление точки удара шарика об ракетку
                     float contact_pos_y = contact.getWorldManifold().getPoints()[0].y - paddle.body.getPosition().y - paddle.height/2f;
-                    Gdx.app.log("relative_pos",  new Float(contact_pos_y).toString() );
+                    // Gdx.app.log("relative_pos",  new Float(contact_pos_y).toString() );
 
+                    // Вычисление угла отражения, максимальный угол = 60 град.
                     float angle = contact_pos_y*60 / (PADDLE_SIZE_Y/2f);
-                    Gdx.app.log("angle", new Float(angle).toString());
+                    // Gdx.app.log("angle", new Float(angle).toString());
 
                     Vector2 velocity = ball.body.getLinearVelocity();
                     ball.body.setLinearVelocity(velocity.setAngle(angle));
 
                 }
 
+                //-------------------------------------------------------//
+                //          Столкновение с ракеткой противника           //
+                //-------------------------------------------------------//
                 if ((contact.getFixtureA().getBody() == ball.body        && contact.getFixtureB().getBody() == paddleEnemy.body) ||
                     (contact.getFixtureA().getBody() == paddleEnemy.body && contact.getFixtureB().getBody() == ball.body)) {
                     f_sharp_5.play();
+
+                    float contact_pos_y = contact.getWorldManifold().getPoints()[0].y - paddleEnemy.body.getPosition().y - paddleEnemy.height/2f;
+                    float angle         = contact_pos_y*60 / (PADDLE_ENEMY_SIZE_Y/2f);
+                    Vector2 velocity    = ball.body.getLinearVelocity();
+                    ball.body.setLinearVelocity(velocity.setAngle(angle));
+
                 }
 
                 if ((contact.getFixtureA().getBody() == ball.body      && contact.getFixtureB().getBody() == groundTop.body) ||
@@ -214,49 +234,64 @@ public class GameScreen implements Screen {
 
         camera.update();
 
-        // world.step(Gdx.app.getGraphics().getDeltaTime(), 4, 4);
-        world.step(1/60f, 4, 4);
-        paddle.processMovement(50f, GROUND_BOTTOM_SIZE_Y, GROUND_TOP_POSITION_Y, Gdx.graphics.getHeight(), WORLD_HEIGHT);
-        paddleEnemy.processMovement(100f, GROUND_BOTTOM_SIZE_Y, GROUND_TOP_POSITION_Y, WORLD_WIDTH); // - GROUND_TOP_SIZE_Y);
-
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-			/*
-			// 0, 0
-			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-			shapeRenderer.identity();
-			shapeRenderer.setColor(Color.RED);
-			//shapeRenderer.translate(0f, 0f, 0f);
-			shapeRenderer.rect(0f, 0f, 10f, 10f);
-			shapeRenderer.setColor(Color.GREEN);
-			// shapeRenderer.translate(120f, 710f, 0f);
-			shapeRenderer.rect(WORLD_WIDTH - 10f, WORLD_HEIGHT - 10f, 10f, 10f);
-			shapeRenderer.end();
-			*/
-
-        groundTop.draw();
-        groundBottom.draw();
-        paddle.draw();
-        paddleEnemy.draw();
-        ball.draw();
-
-        batch.end();
-
-        // Проверка выйгрыша
-        int check_win = checkWin();
-        if (check_win != 0) {
-            if (check_win == 1) {
-                paddleEnemyScore += 1;
-            } else {
-                paddleScore +=1;
-            }
+        // Старт игры
+        if (!gameActive) {
+            ball.body.setTransform(BALL_POSITION_X, BALL_POSITION_Y, 0f);
+            ball.pushBall(BALL_VELOCITY_X * 50, 0 * BALL_VELOCITY_Y * 1);
+            gameActive = true;
         }
 
-        drawScore(paddleEnemyScore, paddleScore);
+        // Процесс игры
+        if (gameActive) {
+            // world.step(Gdx.app.getGraphics().getDeltaTime(), 4, 4);
+            world.step(1 / 60f, 4, 4);
+            paddle.processMovement(50f, 0f, GROUND_TOP_POSITION_Y, Gdx.graphics.getHeight(), WORLD_HEIGHT);
+            paddleEnemy.processMovement(80f, 0f, GROUND_TOP_POSITION_Y, WORLD_WIDTH); // - GROUND_TOP_SIZE_Y);
 
-        drawCenterLine();
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
 
-        debugRenderer.render(world, camera.combined);
+            groundTop.draw();
+            groundBottom.draw();
+            paddle.draw();
+            paddleEnemy.draw();
+            ball.draw();
+
+            batch.end();
+
+            //-------------------------------------------------------//
+            //                 Проверка выйгрыша                     //
+            //-------------------------------------------------------//
+            int check_win = checkWin();
+            if (check_win != 0) {
+                if (check_win == 1) {
+                    f_sharp_3.play();
+                    paddleEnemyScore += 1;
+                    gameActive = false;
+                } else {
+                    f_sharp_3.play();
+                    paddleScore += 1;
+                    gameActive = false;
+                }
+            }
+
+            // Проверка окончения игры
+            if (paddleScore > 2) {
+                game.setScreen(new FinishScreen((PongGame)game, false));
+                dispose();
+                return;
+            } else if (paddleEnemyScore > 2) {
+                game.setScreen(new FinishScreen((PongGame)game, true));
+                dispose();
+                return;
+            }
+
+            drawScore(paddleEnemyScore, paddleScore);
+
+            drawCenterLine();
+
+            debugRenderer.render(world, camera.combined);
+        }
 
     }
 
@@ -274,8 +309,8 @@ public class GameScreen implements Screen {
 
         // Шарик
         ball = new Ball(world, shapeRenderer, BALL_RADIUS);
-        ball.body.setTransform(BALL_POSITION_X, BALL_POSITION_Y, 0f);
-        ball.pushBall(BALL_VELOCITY_X * 100, 0*BALL_VELOCITY_Y * 1);
+        // ball.body.setTransform(BALL_POSITION_X, BALL_POSITION_Y, 0f);
+        // ball.pushBall(BALL_VELOCITY_X * 100, 0*BALL_VELOCITY_Y * 1);
 
         // Ракетка
         paddle = new Paddle(world, shapeRenderer, PADDLE_SIZE_X, PADDLE_SIZE_Y);
@@ -292,9 +327,9 @@ public class GameScreen implements Screen {
      */
     private int checkWin() {
         float ball_x = ball.body.getPosition().x;
-        if (ball_x > WORLD_WIDTH) {
+        if (ball_x < 0) {
             return 1;
-        } else if (ball_x < 0) {
+        } else if (ball_x > WORLD_WIDTH) {
             return 2;
         } else {
             return 0;
