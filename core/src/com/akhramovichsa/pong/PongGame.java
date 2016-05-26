@@ -6,7 +6,7 @@ import com.badlogic.gdx.Game;
 
 
 /**
- * @see * https://github.com/epes/libgdx-box2d-pong
+ *
  */
 public class PongGame extends Game {
 	// 1280x720 = 16:9

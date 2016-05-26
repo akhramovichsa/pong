@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.logging.FileHandler;
 
 /**
- * @see * http://www.gamefromscratch.com/page/LibGDX-Tutorial-series.aspx
+ *
  */
 public class FirstScreen implements Screen {
 
