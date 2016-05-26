@@ -1,6 +1,6 @@
 # Simple PONG game (using Java, LibGDX and Box2D)
 
-![PONG screenshot](https://raw2.github.com/akhramovichsa/pong/master/pong_screenshot.png)
+![PONG screenshot](https://raw.githubusercontent.com/akhramovichsa/pong/master/pong_screenshot.png)
 
 ##  Control to move your paddle
 - 'Left' or 'Right' arrows;
