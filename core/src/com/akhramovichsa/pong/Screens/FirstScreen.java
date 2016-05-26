@@ -1,10 +1,12 @@
 package com.akhramovichsa.pong.Screens;
 
 import com.akhramovichsa.pong.PongGame;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,13 +19,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.logging.FileHandler;
+
 /**
  * @see * http://www.gamefromscratch.com/page/LibGDX-Tutorial-series.aspx
  */
 public class FirstScreen implements Screen {
 
-    static final int WORLD_WIDTH  = PongGame.WORLD_WIDTH;
-    static final int WORLD_HEIGHT = PongGame.WORLD_HEIGHT;
+    private static final int WORLD_WIDTH  = PongGame.WORLD_WIDTH;
+    private static final int WORLD_HEIGHT = PongGame.WORLD_HEIGHT;
 
     private Game game;
     private OrthographicCamera camera;
@@ -44,18 +48,25 @@ public class FirstScreen implements Screen {
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
 
+        /*
+        FileHandle[] dirHandle = Gdx.files.internal("./").list();
+        for(FileHandle file: dirHandle) {
+            Gdx.app.log("aaa", file.toString());
+        }
+        */
+
         // Звуки
-        final Sound f_sharp_5 = Gdx.audio.newSound(Gdx.files.internal("desktop/assets/pongblip_f_sharp_5.mp3"));
+        final Sound f_sharp_5 = Gdx.audio.newSound(Gdx.files.internal("data/pongblip_f_sharp_5.mp3"));
 
         // Шрифты
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_24.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/04b_24.ttf"));
         // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_03b.ttf"));
         // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_08.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80; // WORLD_HEIGHT / 10;
+        parameter.size = 60;  // 80; // WORLD_HEIGHT / 10;
         font = generator.generateFont(parameter);
 
-        parameter.size = 160;
+        parameter.size = 120; // 160;
         font_big = generator.generateFont(parameter);
 
         generator.dispose();
@@ -76,11 +87,12 @@ public class FirstScreen implements Screen {
         //-------------------------------------------------------//
         //                      1 PLAYER                         //
         //-------------------------------------------------------//
-        Label label_1_player = new Label("1 PLAYER", label_style);
+        // Label label_1_player = new Label("1 PLAYER", label_style);
+        Label label_1_player = new Label("PLAY", label_style);
         label_1_player.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked 1 player");
+                // Gdx.app.log("button", "clicked 1 player");
                 f_sharp_5.play();
                 game.setScreen(new GameScreen((PongGame) game));
                 dispose();
@@ -95,7 +107,7 @@ public class FirstScreen implements Screen {
         label_2_players.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked 2 players");
+                // Gdx.app.log("button", "clicked 2 players");
                 f_sharp_5.play();
             }
         });
@@ -107,7 +119,7 @@ public class FirstScreen implements Screen {
         label_settings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked settings");
+                // Gdx.app.log("button", "clicked settings");
                 f_sharp_5.play();
             }
         });
@@ -119,7 +131,7 @@ public class FirstScreen implements Screen {
         label_exit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("button", "clicked exit");
+                // Gdx.app.log("button", "clicked exit");
                 f_sharp_5.play();
                 Gdx.app.exit();
                 // label_1_player.setText("PONG 1");
@@ -136,10 +148,10 @@ public class FirstScreen implements Screen {
         table.add(label_pong).expandX().center().pad(WORLD_HEIGHT / 32);
         table.row();
         table.add(label_1_player).expandX().center().pad(WORLD_HEIGHT / 32);
-        table.row();
-        table.add(label_2_players).expandX().center().pad(WORLD_HEIGHT / 32);
-        table.row();
-        table.add(label_settings).expandX().center().pad(WORLD_HEIGHT / 32);
+        // table.row();
+        // table.add(label_2_players).expandX().center().pad(WORLD_HEIGHT / 32);
+        // table.row();
+        // table.add(label_settings).expandX().center().pad(WORLD_HEIGHT / 32);
         table.row();
         table.add(label_exit).expandX().center();
 
@@ -194,5 +206,6 @@ public class FirstScreen implements Screen {
         batch.dispose();
         stage.dispose();
         font.dispose();
+        font_big.dispose();
     }
 }

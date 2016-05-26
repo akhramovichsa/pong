@@ -1,6 +1,7 @@
 package com.akhramovichsa.pong.Screens;
 
 import com.akhramovichsa.pong.PongGame;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,9 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 /**
  * Экран окончания игры
  */
-public class FinishScreen implements Screen {
-    static final int WORLD_WIDTH  = PongGame.WORLD_WIDTH;
-    static final int WORLD_HEIGHT = PongGame.WORLD_HEIGHT;
+class FinishScreen implements Screen {
+    private static final int WORLD_WIDTH  = PongGame.WORLD_WIDTH;
+    private static final int WORLD_HEIGHT = PongGame.WORLD_HEIGHT;
 
     private boolean isPlayerWins;
 
@@ -32,7 +33,7 @@ public class FinishScreen implements Screen {
     private SpriteBatch batch;
     private BitmapFont font, font_big;
 
-    public FinishScreen(PongGame _game, boolean is_player_wins) {
+    FinishScreen(PongGame _game, boolean is_player_wins) {
         game         = _game;
         isPlayerWins = is_player_wins;
     }
@@ -47,17 +48,17 @@ public class FinishScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         // Звуки
-        final Sound f_sharp_5 = Gdx.audio.newSound(Gdx.files.internal("desktop/assets/pongblip_f_sharp_5.mp3"));
+        final Sound f_sharp_5 = Gdx.audio.newSound(Gdx.files.internal("data/pongblip_f_sharp_5.mp3"));
 
         // Шрифты
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_24.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/04b_24.ttf"));
         // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_03b.ttf"));
         // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_08.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80; // WORLD_HEIGHT / 10;
+        parameter.size = 60; // 80; // WORLD_HEIGHT / 10;
         font = generator.generateFont(parameter);
 
-        parameter.size = 160;
+        parameter.size = 80; // 120;
         font_big = generator.generateFont(parameter);
 
         generator.dispose();
@@ -73,7 +74,7 @@ public class FinishScreen implements Screen {
         //-------------------------------------------------------//
         //                        PONG                           //
         //-------------------------------------------------------//
-        Label label_pong = new Label("PONG", label_big_style);
+        // Label label_pong = new Label("PONG", label_big_style);
 
         //-------------------------------------------------------//
         //                      PLAYER WINS                       //

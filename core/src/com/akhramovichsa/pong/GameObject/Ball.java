@@ -1,7 +1,9 @@
 package com.akhramovichsa.pong.GameObject;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,16 +12,18 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.util.Random;
+
 /**
  *
  */
 public class Ball {
     private float radius;
 
-    protected ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer;
 
-    public BodyDef    bodyDef;
-    public FixtureDef fixtureDef;
+    private BodyDef    bodyDef;
+    private FixtureDef fixtureDef;
     public Body       body;
 
     public Ball(World _world, ShapeRenderer _shapeRenderer, float _radius) {
@@ -52,11 +56,16 @@ public class Ball {
 
     /**
      * Запустить шарик
-     * @param velocity_x
-     * @param velocity_y
+     * @param velocity скорость
      */
-    public void pushBall(float velocity_x, float velocity_y) {
-        body.setLinearVelocity(velocity_x, velocity_y);
+    public void pushBall(Vector2 velocity) {
+        // Random random = new Random();
+        // int velocity_rnd = random.nextInt((int)velocity_y);
+
+        // velocity_y -= 2*velocity_rnd;
+        // Gdx.app.log("random", new Integer((int)velocity_rnd).toString() );
+
+        body.setLinearVelocity(velocity);
     }
 
     Matrix4 transform = new Matrix4();

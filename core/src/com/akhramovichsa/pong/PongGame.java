@@ -10,17 +10,11 @@ import com.badlogic.gdx.Game;
  */
 public class PongGame extends Game {
 	// 1280x720 = 16:9
-	public static final int WORLD_WIDTH  = 160; // 320; // 1280 / PPM;
-	public static final int WORLD_HEIGHT = 90;  // 180; // 720  / PPM;
-
-	public FirstScreen firstScreen;
-	public GameScreen  gameScreen;
+	public static final int WORLD_WIDTH  = 90;  //160; // 320; // 1280 / PPM;
+	public static final int WORLD_HEIGHT = 160; // 90;  // 180; // 720  / PPM;
 
 	@Override
 	public void create () {
-		// firstScreen = new FirstScreen(this);
-		// gameScreen  = new GameScreen(this);
-
 		setScreen(new FirstScreen(this));
 		// setScreen(gameScreen);
 	}

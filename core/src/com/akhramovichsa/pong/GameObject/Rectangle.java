@@ -18,10 +18,10 @@ public class Rectangle {
     public float width;
     public float height;
 
-    protected ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer;
 
-    public BodyDef    bodyDef;
-    public FixtureDef fixtureDef;
+    private BodyDef    bodyDef;
+    private FixtureDef fixtureDef;
     public Body       body;
 
     public Rectangle(World _world, ShapeRenderer _shapeRenderer, float _width, float _height) {
@@ -55,7 +55,7 @@ public class Rectangle {
         shape.dispose();
     }
 
-    Matrix4 transform = new Matrix4();
+    private Matrix4 transform = new Matrix4();
     public void draw() {
         Vector2 pos = body.getWorldCenter();
         float angle = body.getAngle();
