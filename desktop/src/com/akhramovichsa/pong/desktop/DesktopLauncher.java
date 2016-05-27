@@ -1,6 +1,5 @@
 package com.akhramovichsa.pong.desktop;
 
-import com.akhramovichsa.pong.Screens.FirstScreen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.akhramovichsa.pong.PongGame;
