@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
     private static final float BALL_POSITION_Y = WORLD_HEIGHT / 2f;
     private static final float BALL_VELOCITY_X = WORLD_WIDTH  / 4f;
     private static final float BALL_VELOCITY_Y = WORLD_HEIGHT / 4f;
-    private static final float BALL_VELOCITY_START     = WORLD_HEIGHT / 4f;  // Начальная скорость шарика
+    private static final float BALL_VELOCITY_START     = WORLD_HEIGHT / 2f;  // Начальная скорость шарика
     private static final float BALL_VELOCITY_MAX       = WORLD_HEIGHT;       // Максимальная скорость шарика
     private static final float BALL_VELOCITY_INCREMENT = WORLD_HEIGHT / 16f; // Величина увеличения скорости шарика поле 5-го удара
 
@@ -102,13 +102,15 @@ public class GameScreen implements Screen {
     private int paddleContact    = 0;     // Касаение с ракеткой, через 5 касаний увеливается скорость
     private boolean isPaddleGoal = false; // Кто забил гол, нужно для определения направления старта мячика
     private boolean gameActive   = false;
+    private int scoreToWins;
 
     private Sound f_sharp_3;
 
     private FPSLogger fpsLogger;
 
-    GameScreen(PongGame game) {
-        this.game = game;
+    GameScreen(PongGame game, int score_to_wins) {
+        this.game        = game;
+        this.scoreToWins = score_to_wins;
 
         fpsLogger = new FPSLogger();
 
@@ -323,12 +325,12 @@ public class GameScreen implements Screen {
             //-------------------------------------------------------//
             //              Проверка окончания игры                  //
             //-------------------------------------------------------//
-            if (paddleScore > 9) {
-                game.setScreen(new FinishScreen((PongGame)game, false));
+            if (paddleScore >= this.scoreToWins) {
+                game.setScreen(new FinishScreen((PongGame)game, false, this.scoreToWins));
                 dispose();
                 return;
-            } else if (paddleEnemyScore > 9) {
-                game.setScreen(new FinishScreen((PongGame)game, true));
+            } else if (paddleEnemyScore >= this.scoreToWins) {
+                game.setScreen(new FinishScreen((PongGame)game, true, this.scoreToWins));
                 dispose();
                 return;
             }

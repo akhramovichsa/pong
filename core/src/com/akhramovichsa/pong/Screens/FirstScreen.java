@@ -60,8 +60,8 @@ public class FirstScreen implements Screen {
 
         // Шрифты
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/04b_24.ttf"));
-        // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_03b.ttf"));
-        // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("desktop/assets/04b_08.ttf"));
+        // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/04b_03b.ttf"));
+        // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/04b_08.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 60;  // 80; // WORLD_HEIGHT / 10;
         font = generator.generateFont(parameter);
@@ -87,8 +87,8 @@ public class FirstScreen implements Screen {
         //-------------------------------------------------------//
         //                      1 PLAYER                         //
         //-------------------------------------------------------//
-        // Label label_1_player = new Label("1 PLAYER", label_style);
-        Label label_1_player = new Label("PLAY", label_style);
+        Label label_1_player = new Label("PLAY TO", label_style);
+        /*
         label_1_player.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -96,7 +96,51 @@ public class FirstScreen implements Screen {
                 f_sharp_5.play();
                 game.setScreen(new GameScreen((PongGame) game));
                 dispose();
-                // label_1_player.setText("PONG 1");
+            }
+        });
+        */
+
+        // Игра до 1 победы
+        Label label_1_win = new Label("1 WIN", label_style);
+        label_1_win.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                f_sharp_5.play();
+                game.setScreen(new GameScreen((PongGame) game, 1));
+                dispose();
+            }
+        });
+
+        // Игра до 3 побед
+        Label label_3_wins = new Label("3 WINS", label_style);
+        label_3_wins.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                f_sharp_5.play();
+                game.setScreen(new GameScreen((PongGame) game, 3));
+                dispose();
+            }
+        });
+
+        // Игра до 5 побед
+        Label label_5_wins = new Label("5 WINS", label_style);
+        label_5_wins.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                f_sharp_5.play();
+                game.setScreen(new GameScreen((PongGame) game, 5));
+                dispose();
+            }
+        });
+
+        // Игра до 10 побед
+        Label label_10_wins = new Label("10 WINS", label_style);
+        label_10_wins.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                f_sharp_5.play();
+                game.setScreen(new GameScreen((PongGame) game, 10));
+                dispose();
             }
         });
 
@@ -148,8 +192,12 @@ public class FirstScreen implements Screen {
         table.add(label_pong).expandX().center().pad(WORLD_HEIGHT / 32);
         table.row();
         table.add(label_1_player).expandX().center().pad(WORLD_HEIGHT / 32);
-        // table.row();
-        // table.add(label_2_players).expandX().center().pad(WORLD_HEIGHT / 32);
+        table.row();
+        table.add(label_1_win).expandX().center().pad(WORLD_HEIGHT / 32);
+        table.row();
+        table.add(label_3_wins).expandX().center().pad(WORLD_HEIGHT / 32);
+        table.row();
+        table.add(label_5_wins).expandX().center().pad(WORLD_HEIGHT / 32);
         // table.row();
         // table.add(label_settings).expandX().center().pad(WORLD_HEIGHT / 32);
         table.row();

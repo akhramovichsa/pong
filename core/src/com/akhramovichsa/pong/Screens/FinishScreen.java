@@ -26,6 +26,7 @@ class FinishScreen implements Screen {
     private static final int WORLD_HEIGHT = PongGame.WORLD_HEIGHT;
 
     private boolean isPlayerWins;
+    private int scoreToWins;
 
     private Game game;
     private OrthographicCamera camera;
@@ -33,13 +34,17 @@ class FinishScreen implements Screen {
     private SpriteBatch batch;
     private BitmapFont font, font_big;
 
-    FinishScreen(PongGame _game, boolean is_player_wins) {
-        game         = _game;
-        isPlayerWins = is_player_wins;
+
+    FinishScreen(PongGame _game, boolean is_player_wins, int score_to_wins) {
+        this.game         = _game;
+        this.isPlayerWins = is_player_wins;
+        this.scoreToWins  = score_to_wins;
     }
 
     @Override
     public void show() {
+        final int score_to_wins = this.scoreToWins;
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         camera.update();
@@ -58,7 +63,7 @@ class FinishScreen implements Screen {
         parameter.size = 60; // 80; // WORLD_HEIGHT / 10;
         font = generator.generateFont(parameter);
 
-        parameter.size = 80; // 120;
+        parameter.size = 70; // 120;
         font_big = generator.generateFont(parameter);
 
         generator.dispose();
@@ -94,7 +99,7 @@ class FinishScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 f_sharp_5.play();
-                game.setScreen(new GameScreen((PongGame) game));
+                game.setScreen(new GameScreen((PongGame) game, score_to_wins));
                 dispose();
             }
         });
